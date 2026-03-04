@@ -4,9 +4,14 @@ const cors = require("cors");
 
 const app = express();
 
+const PORT = process.env.PORT || 3000;
+
 app.use(cors());
 app.use(express.json());
 
+app.get("/", (req,res)=>{
+    res.send("Server Running");
+});
 
 app.post("/video", async (req, res) => {
     
@@ -27,20 +32,20 @@ app.post("/video", async (req, res) => {
         });
 
         const formats = data.formats
-  .filter(f =>
-    f.ext === "mp4" &&
-    f.acodec !== "none" &&
-    f.vcodec !== "none"
-  )
-  .map(f => ({
-    quality: f.height ? f.height + "p" : "video",
-    url: f.url,
-    ext: f.ext,
-    size: f.filesize
-      ? (f.filesize / 1024 / 1024).toFixed(1) + "MB"
-      : "-",
-    type: "video"
-  }));
+        .filter(f =>
+            f.ext === "mp4" &&
+            f.acodec !== "none" &&
+            f.vcodec !== "none"
+        )
+        .map(f => ({
+            quality: f.height ? f.height + "p" : "video",
+            url: f.url,
+            ext: f.ext,
+            size: f.filesize
+                ? (f.filesize / 1024 / 1024).toFixed(1) + "MB"
+                : "-",
+            type: "video"
+        }));
 
         res.json({
             title: data.title,
@@ -55,4 +60,4 @@ app.post("/video", async (req, res) => {
 
 });
 
-app.listen(PORT, () => console.log("Server Running"));
+app.listen(PORT, () => console.log("Server Running on", PORT));
