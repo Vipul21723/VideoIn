@@ -28,7 +28,8 @@ app.post("/video", async (req, res) => {
         const data = await ytdlp(fixedUrl, {
             dumpSingleJson: true,
             noWarnings: true,
-            preferFreeFormats: true
+            preferFreeFormats: true,
+            cookies: "./cookies.txt"
         });
 
         const formats = data.formats
