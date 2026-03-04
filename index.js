@@ -30,7 +30,7 @@ app.post("/video", async (req, res) => {
     noWarnings: true,
     preferFreeFormats: true,
     extractorArgs: "youtube:player_client=android"
-});});
+});
 
         const formats = data.formats
         .filter(f =>
