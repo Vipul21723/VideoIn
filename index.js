@@ -26,18 +26,19 @@ app.post("/video", async (req, res) => {
 
         const data = await ytdlp(fixedUrl,{
             dumpSingleJson:true,
-            cookies:"./cookies.txt",
-            format:"b[ext=mp4]/best"
+            cookies:"./cookies.txt"
         });
 
         const formats = data.formats
-        .filter(f=>f.ext==="mp4")
-        .map(f=>({
-            quality:f.height?f.height+"p":"video",
-            url:f.url,
-            size:f.filesize
-            ?(f.filesize/1024/1024).toFixed(1)+"MB"
-            :"-"
+        .filter(f => f.vcodec !== "none")
+        .filter(f => f.url)
+        .map(f => ({
+            type:"video",
+            quality: f.height ? f.height+"p" : "video",
+            url: f.url,
+            size: f.filesize
+                ? (f.filesize/1024/1024).toFixed(1)+"MB"
+                : "-"
         }));
 
         res.json({
