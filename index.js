@@ -25,12 +25,16 @@ app.post("/video", async (req, res) => {
             fixedUrl = url.replace("x.com", "twitter.com");
         }
 
-       const data = await ytdlp(fixedUrl, {
-    dumpSingleJson: true,
-    noWarnings: true,
-    preferFreeFormats: true,
-    extractorArgs: "youtube:player_client=android"
-});
+      const data = await ytdlp(fixedUrl, {
+        dumpSingleJson: true,
+        noWarnings: true,
+        preferFreeFormats: true,
+        extractorArgs: "youtube:player_client=android,web",
+        addHeader: [
+            "referer:youtube.com",
+            "user-agent:Mozilla/5.0"
+        ]
+        });
 
         const formats = data.formats
         .filter(f =>
